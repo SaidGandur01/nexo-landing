@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexo AI Agency — Agentes de Voz Inteligentes para Inmobiliarias</title>
+    <meta name="description" content="Nexo AI Agency automatiza la captación y seguimiento de leads inmobiliarios con agentes de voz AI y WhatsApp Business.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0B0F14;
+            --bg-card: #111820;
+            --bg-card-hover: #161E28;
+            --accent: #3ECFAD;
+            --accent-glow: rgba(62, 207, 173, 0.15);
+            --accent-dim: #2A8F79;
+            --text: #E8ECF1;
+            --text-muted: #8A95A5;
+            --text-dim: #5A6577;
+            --border: rgba(255,255,255,0.06);
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.25rem 2.5rem;
+            background: rgba(11,15,20,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: var(--font-body);
+            font-weight: 700; font-size: 1.15rem;
+            letter-spacing: -0.02em; color: var(--text);
+        }
+        .logo span { color: var(--accent); }
+        nav a {
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            transition: color 0.25s;
+        }
+        nav a:hover { color: var(--accent); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-cta {
+            background: var(--accent); color: var(--bg);
+            padding: 0.5rem 1.25rem; border-radius: 6px;
+            font-weight: 600; font-size: 0.85rem;
+            transition: opacity 0.25s;
+        }
+        .nav-cta:hover { color: var(--bg); opacity: 0.85; }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            padding: 8rem 2rem 5rem;
+            position: relative;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.4rem 1rem; border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            font-size: 0.8rem; color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: fadeUp 0.8s ease both;
+        }
+        .hero-badge .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse 2s infinite;
+        }
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 600; line-height: 1.1;
+            letter-spacing: -0.025em;
+            max-width: 800px;
+            animation: fadeUp 0.8s 0.1s ease both;
+        }
+        .hero h1 em {
+            font-style: italic; color: var(--accent);
+        }
+        .hero p {
+            max-width: 540px; margin-top: 1.5rem;
+            font-size: 1.1rem; color: var(--text-muted);
+            line-height: 1.7;
+            animation: fadeUp 0.8s 0.2s ease both;
+        }
+        .hero-actions {
+            display: flex; gap: 1rem; margin-top: 2.5rem;
+            animation: fadeUp 0.8s 0.3s ease both;
+        }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--accent); color: var(--bg);
+            padding: 0.85rem 1.75rem; border-radius: 8px;
+            font-weight: 600; font-size: 0.95rem;
+            text-decoration: none; transition: all 0.25s;
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: transparent; color: var(--text);
+            padding: 0.85rem 1.75rem; border-radius: 8px;
+            border: 1px solid var(--border);
+            font-weight: 500; font-size: 0.95rem;
+            text-decoration: none; transition: all 0.25s;
+        }
+        .btn-secondary:hover { border-color: var(--text-dim); background: var(--bg-card); }
+
+        /* ── SECTIONS ── */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1100px; margin: 0 auto;
+        }
+        .section-label {
+            font-size: 0.75rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--accent); margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 600; line-height: 1.15;
+            letter-spacing: -0.02em; max-width: 600px;
+        }
+        .section-desc {
+            color: var(--text-muted); font-size: 1.05rem;
+            max-width: 520px; margin-top: 1rem; line-height: 1.7;
+        }
+
+        /* ── FEATURES GRID ── */
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem; margin-top: 3.5rem;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px; padding: 2rem;
+            transition: all 0.35s;
+        }
+        .feature-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(62,207,173,0.15);
+            transform: translateY(-2px);
+        }
+        .feature-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: var(--accent-glow);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem; margin-bottom: 1.25rem;
+        }
+        .feature-card h3 {
+            font-size: 1.1rem; font-weight: 600; margin-bottom: 0.6rem;
+        }
+        .feature-card p {
+            font-size: 0.92rem; color: var(--text-muted); line-height: 1.65;
+        }
+
+        /* ── PROCESS ── */
+        .process-steps {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem; margin-top: 3.5rem;
+        }
+        .step {
+            position: relative;
+            padding-left: 1.25rem;
+            border-left: 2px solid var(--border);
+        }
+        .step.active { border-left-color: var(--accent); }
+        .step-num {
+            font-family: var(--font-display);
+            font-size: 2.5rem; font-weight: 700;
+            color: var(--accent); opacity: 0.3; line-height: 1;
+        }
+        .step.active .step-num { opacity: 1; }
+        .step h3 {
+            font-size: 1rem; font-weight: 600; margin: 0.75rem 0 0.5rem;
+        }
+        .step p {
+            font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;
+        }
+
+        /* ── PROJECTS ── */
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 2.5rem;
+            margin-top: 3rem;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+            align-items: center;
+        }
+        .project-info h3 {
+            font-family: var(--font-display);
+            font-size: 1.6rem; font-weight: 600; margin-bottom: 0.75rem;
+        }
+        .project-info p {
+            color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;
+        }
+        .project-stats {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;
+        }
+        .stat {
+            padding: 1rem; border-radius: 10px;
+            background: rgba(62,207,173,0.05);
+            border: 1px solid rgba(62,207,173,0.08);
+        }
+        .stat-value {
+            font-size: 1.5rem; font-weight: 700; color: var(--accent);
+        }
+        .stat-label {
+            font-size: 0.78rem; color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+        .project-visual {
+            display: flex; align-items: center; justify-content: center;
+        }
+        .agent-demo {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px; padding: 1.75rem;
+            width: 100%; max-width: 360px;
+        }
+        .agent-header {
+            display: flex; align-items: center; gap: 0.75rem;
+            margin-bottom: 1.25rem; padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .agent-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; color: var(--bg);
+        }
+        .agent-name { font-weight: 600; font-size: 0.95rem; }
+        .agent-role { font-size: 0.78rem; color: var(--text-muted); }
+        .chat-bubble {
+            background: var(--bg-card-hover);
+            border-radius: 12px 12px 12px 4px;
+            padding: 0.85rem 1rem;
+            font-size: 0.88rem; line-height: 1.55;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .chat-bubble.typing::after {
+            content: '...'; animation: typing 1.2s infinite;
+        }
+        .chat-time {
+            font-size: 0.7rem; color: var(--text-dim); margin-top: 0.25rem;
+        }
+
+        /* ── CONTACT / FOOTER ── */
+        .contact-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .contact-section .section-title { margin: 0 auto; }
+        .contact-section .section-desc { margin: 1rem auto 2rem; }
+        .contact-grid {
+            display: flex; gap: 2rem; justify-content: center;
+            flex-wrap: wrap; margin-top: 1rem;
+        }
+        .contact-item {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 1rem 1.5rem; border-radius: 10px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            font-size: 0.92rem;
+        }
+        .contact-item .icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            background: var(--accent-glow);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        footer {
+            text-align: center; padding: 2.5rem 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.82rem; color: var(--text-dim);
+        }
+        footer .logo { margin-bottom: 0.75rem; }
+        .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 1rem; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; }
+        .footer-links a:hover { color: var(--accent); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.25rem; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            .project-card { grid-template-columns: 1fr; }
+            .hero-actions { flex-direction: column; }
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        @keyframes typing {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="logo">nexo<span>.</span>ai</div>
+    <div class="nav-links">
+        <a href="#servicios">Servicios</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto" class="nav-cta">Contacto</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">
+        <span class="dot"></span>
+        Agentes AI activos 24/7
+    </div>
+    <h1>Agentes de voz <em>inteligentes</em> para inmobiliarias</h1>
+    <p>Automatizamos la captación, calificación y seguimiento de leads inmobiliarios con agentes de voz AI integrados a WhatsApp Business.</p>
+    <div class="hero-actions">
+        <a href="#contacto" class="btn-primary">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Agendar demo
+        </a>
+        <a href="#servicios" class="btn-secondary">Conocer más</a>
+    </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+    <div class="section-label">Servicios</div>
+    <h2 class="section-title">Tecnología AI al servicio de tus ventas</h2>
+    <p class="section-desc">Cada agente se entrena con la información específica de tu proyecto inmobiliario y opera de forma autónoma.</p>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="22" height="22" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </div>
+            <h3>Agentes de voz AI</h3>
+            <p>Consultores virtuales que llaman, califican y agendan citas con tus prospectos inmobiliarios en lenguaje natural.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="22" height="22" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            </div>
+            <h3>WhatsApp Business API</h3>
+            <p>Seguimiento automático por WhatsApp con brochures, confirmaciones de cita e información del proyecto personalizada.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="22" height="22" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <h3>Calificación de leads</h3>
+            <p>Cada llamada genera un perfil estructurado del prospecto: presupuesto, timeline, tipo de propiedad y nivel de interés.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="22" height="22" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <h3>Agendamiento inteligente</h3>
+            <p>Coordina citas presenciales o virtuales según la ubicación del cliente y la disponibilidad del equipo comercial.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="22" height="22" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+            </div>
+            <h3>Analítica en tiempo real</h3>
+            <p>Dashboard con métricas de conversión, duración de llamadas, leads calificados y estado de seguimientos activos.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="22" height="22" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Multi-proyecto</h3>
+            <p>Arquitectura diseñada para gestionar múltiples agentes y proyectos inmobiliarios desde una sola plataforma.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+    <div class="section-label">Proceso</div>
+    <h2 class="section-title">De la implementación a los resultados</h2>
+    <p class="section-desc">Configuramos tu agente AI en días, no meses.</p>
+
+    <div class="process-steps">
+        <div class="step active">
+            <div class="step-num">01</div>
+            <h3>Entrenamiento</h3>
+            <p>Cargamos la información de tu proyecto: ubicación, precios, amenidades, objeciones comunes y guiones de venta.</p>
+        </div>
+        <div class="step active">
+            <div class="step-num">02</div>
+            <h3>Configuración</h3>
+            <p>Integramos telefonía con número local colombiano, WhatsApp Business API y templates personalizados.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">03</div>
+            <h3>Lanzamiento</h3>
+            <p>Activamos el agente para que inicie llamadas, califique leads y agende citas de forma autónoma.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">04</div>
+            <h3>Optimización</h3>
+            <p>Iteramos con base en datos reales: tasas de conversión, feedback de clientes y métricas de calidad.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PROYECTOS -->
+<section id="proyectos">
+    <div class="section-label">Proyectos</div>
+    <h2 class="section-title">Proyectos activos</h2>
+    <p class="section-desc">Cada proyecto tiene su propio agente AI entrenado específicamente para maximizar conversiones.</p>
+
+    <div class="project-card">
+        <div class="project-info">
+            <h3>Country House Campestre</h3>
+            <p>Proyecto de 14 casas campestres de lujo en La Mesa de los Santos, Santander. Club de Pickleball, naturaleza y exclusividad a minutos de Bucaramanga.</p>
+            <div class="project-stats">
+                <div class="stat">
+                    <div class="stat-value">14</div>
+                    <div class="stat-label">Casas de lujo</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Agente activo</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">AI + WA</div>
+                    <div class="stat-label">Voz & WhatsApp</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">2026</div>
+                    <div class="stat-label">Entrega</div>
+                </div>
+            </div>
+        </div>
+        <div class="project-visual">
+            <div class="agent-demo">
+                <div class="agent-header">
+                    <div class="agent-avatar">CT</div>
+                    <div>
+                        <div class="agent-name">Camila Tarazona</div>
+                        <div class="agent-role">Consultora AI · Country House</div>
+                    </div>
+                </div>
+                <div class="chat-bubble">
+                    ¡Aló! Buenos días. Habla Camila, consultora de Country House Campestre. ¿Le gustaría conocer nuestro proyecto de casas en La Mesa de los Santos?
+                </div>
+                <div class="chat-time">Agente de voz AI · Activo</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="contact-section">
+    <div class="section-label">Contacto</div>
+    <h2 class="section-title">¿Listo para automatizar tus ventas?</h2>
+    <p class="section-desc">Agenda una demo gratuita y descubre cómo un agente AI puede multiplicar la captación de tu proyecto inmobiliario.</p>
+
+    <div class="contact-grid">
+        <div class="contact-item">
+            <div class="icon">
+                <svg width="18" height="18" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+                <div style="font-weight:600;font-size:0.85rem;">Email</div>
+                <div style="color:var(--text-muted);font-size:0.88rem;">thenexoagency@gmail.com</div>
+            </div>
+        </div>
+        <div class="contact-item">
+            <div class="icon">
+                <svg width="18" height="18" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+                <div style="font-weight:600;font-size:0.85rem;">Ubicación</div>
+                <div style="color:var(--text-muted);font-size:0.88rem;">Bucaramanga, Colombia</div>
+            </div>
+        </div>
+        <div class="contact-item">
+            <div class="icon">
+                <svg width="18" height="18" fill="none" stroke="#3ECFAD" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+                <div style="font-weight:600;font-size:0.85rem;">WhatsApp</div>
+                <div style="color:var(--text-muted);font-size:0.88rem;">+57 324 635 1441</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="logo">nexo<span>.</span>ai</div>
+    <div class="footer-links">
+        <a href="#servicios">Servicios</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto">Contacto</a>
+    </div>
+    <p>© 2026 Nexo AI Agency · Bucaramanga, Colombia · NIT pendiente de registro</p>
+    <p style="margin-top:0.5rem;">Agentes de voz AI y automatización WhatsApp para el sector inmobiliario.</p>
+</footer>
+
+</body>
+</html>
